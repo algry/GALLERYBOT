@@ -1,10 +1,9 @@
-const discord = require("discord.js");
+const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs");
 const client = new Discord.Client();
 
 var currentID = 1;
-var idName = "imgID-" + currentID;
 
 var session = {
 	active: false
@@ -19,30 +18,29 @@ client.on('ready', () => {
   });
 });
 
-client.on('message', () => {
-	var args = message.content.splice("~");
+client.on('message', message => {
+	var args = message.content.split("~");
 	
 	if (message.channel.type === 'dm') {
 		
 	} else {
 		switch(args[0]) {
 			case ">pic":
-				pictureSave();
+				pictureSave(message, args);
 				break;
 		}
 	}
 });
 
-pictureSave = () => {
+pictureSave = (message, args) => {
 	switch(args[1]) {
 		case "add":
-			fs.writeFile(idName, '{"ID": ' + currentID + ',"rating": 0, "title": "' + args[3] + '", "URL":' + args[2] + '}', "utf8", (err) => {
+			fs.writeFile("imgID-" + currentID + ".json", '{"ID": ' + currentID + ',"rating": 0, "title": "' + args[3] + '", "URL":' + args[2] + '}', "utf8", (err) => {
 				if (err) {
 					throw err;
 				}
 				currentID++;
-				idName = "imgID-" + currentID;
-				})
+			});
 			break;
 	}
 };
