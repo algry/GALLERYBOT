@@ -19,7 +19,7 @@ client.on('ready', () => {
   });
 });
 
-client.on('message' () => {
+client.on('message', () => {
 	var args = message.content.splice("~");
 	
 	if (message.channel.type === 'dm') {
@@ -33,10 +33,10 @@ client.on('message' () => {
 	}
 });
 
-pictureSave() {
+pictureSave = () => {
 	switch(args[1]) {
 		case "add":
-			fs.writeFile(idName, '{"ID": ' + currentID + ',"rating": 0, "title": "' + args[3] '", "URL":' + args[2] '}', "utf8", (err) => {
+			fs.writeFile(idName, '{"ID": ' + currentID + ',"rating": 0, "title": "' + args[3] + '", "URL":' + args[2] + '}', "utf8", (err) => {
 				if (err) {
 					throw err;
 				}
