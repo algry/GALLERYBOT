@@ -1,7 +1,7 @@
-const discord = require("discord.js");
+const Discord = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs");
-const client = new discord.Client();
+const client = new Discord.Client();
 const maxPost = require("./maxPost.json");
 const imgs = require("./allImages.json");
 
@@ -41,7 +41,7 @@ client.on('message', message => {
 			case ">view":
 				switch(args[1]) {
 					case "":
-						channel.send("");
+						channel.send(allImages[random(1, currentID)].URL);
 					break;
 				}
 			break;
@@ -49,27 +49,30 @@ client.on('message', message => {
 	} else {
 		switch(args[0]) {
 			case ">pic":
-				switch(args[1]) {
+				pictureSave(message, args);
+			break;
+		}
+	}
+});
+
+function pictureSave(message, args) {
+switch(args[1]) {
 					case "add":
 					var imgtitle = args[2];
 					var imgurl = args[3];
 					var retrievedImage;
 						fs.readFile('allImages.json', (err, data) => {
 							retrievedImage = JSON.parse(data);
-							retrievedImage[idName] = '{"ID": ' + currentID + ',"rating": 0, "title": "' + imgtitle + '", "URL": "' + imgurl + '", "server": 1}';
-							fs.writeFile(name, JSON.stringify(images), err => {
+							retrievedImage.push('[{"ID": ' + currentID + ',"rating": 0, "title": "' + imgtitle + '", "URL": "' + imgurl + '", "server": 1}]');
+							fs.writeFile(idName, JSON.stringify(retrievedImage), err => {
 								throw err;
 							});
-						);
 						currentID++;
 						idName = "imgID-" + currentID;
 						writeMax();
-						channel.send("Image " + args[2] + " saved!");
+						message.channel.send("Image " + args[2] + " saved!");
 						});
 					break
 				}
-			break;
-		}
-	}
-});
+}
 
